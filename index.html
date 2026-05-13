@@ -1,0 +1,2544 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark" />
+  <title>ООО «КВАНТ-2000» — Электротехническая лаборатория полного цикла</title>
+  <meta name="description" content="Электротехническая лаборатория ООО «КВАНТ-2000». Испытания, измерения, электромонтаж и ПНР по всей России." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Unbounded:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070707;
+      --bg-2: #0e0e0e;
+      --card: rgba(255, 255, 255, .055);
+      --card-2: rgba(255, 255, 255, .085);
+      --line: rgba(255, 255, 255, .11);
+      --line-2: rgba(255, 255, 255, .18);
+      --text: #f8f8f8;
+      --muted: rgba(255, 255, 255, .62);
+      --muted-2: rgba(255, 255, 255, .42);
+      --accent: #f9c74f;
+      --accent-2: #ffdf86;
+      --danger: #ff6b35;
+      --green: #56f39a;
+      --shadow: 0 30px 110px rgba(0,0,0,.45);
+      --radius: 34px;
+      --sidebar: 154px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -4;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(249,199,79,.18), transparent 34%),
+        radial-gradient(circle at 88% 14%, rgba(255,255,255,.11), transparent 32%),
+        radial-gradient(circle at 65% 74%, rgba(249,199,79,.08), transparent 40%),
+        linear-gradient(180deg, #090909 0%, #050505 54%, #0a0a0a 100%);
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -3;
+      opacity: .13;
+      background-image:
+        linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(circle at 50% 10%, #000 0%, transparent 66%);
+      animation: gridMove 18s linear infinite;
+    }
+
+    ::selection {
+      background: var(--accent);
+      color: #070707;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      pointer-events: none;
+      opacity: .12;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.55'/%3E%3C/svg%3E");
+    }
+
+    .page {
+      padding-left: var(--sidebar);
+    }
+
+    .container {
+      width: min(1220px, calc(100vw - 56px));
+      margin: 0 auto;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar);
+      z-index: 50;
+      background: rgba(0,0,0,.76);
+      backdrop-filter: blur(22px);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 30px 26px;
+    }
+
+    .side-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      background: #fff;
+      color: #070707;
+      font-family: Unbounded, sans-serif;
+      font-weight: 800;
+      box-shadow: 0 0 46px rgba(255,255,255,.17);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .side-logo::after {
+      content: "";
+      position: absolute;
+      inset: -80% -40%;
+      background: linear-gradient(90deg, transparent, rgba(249,199,79,.9), transparent);
+      transform: rotate(35deg) translateX(-140%);
+      animation: shine 4s ease-in-out infinite;
+    }
+
+    .side-nav {
+      margin-top: 74px;
+      display: grid;
+      gap: 19px;
+      width: 100%;
+    }
+
+    .side-nav a {
+      font-size: 12px;
+      color: rgba(255,255,255,.67);
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: .3s ease;
+    }
+
+    .side-nav a span {
+      color: rgba(255,255,255,.28);
+      transition: .3s ease;
+    }
+
+    .side-nav a:hover {
+      color: #fff;
+      transform: translateX(3px);
+    }
+
+    .side-nav a:hover span {
+      color: var(--accent);
+    }
+
+    .side-social {
+      margin-top: auto;
+      width: 100%;
+    }
+
+    .side-social p {
+      font-size: 9px;
+      color: rgba(255,255,255,.36);
+      letter-spacing: .26em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .side-social .icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .side-social a {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: rgba(255,255,255,.62);
+      font-size: 12px;
+      transition: .3s ease;
+    }
+
+    .side-social a:hover {
+      color: #070707;
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 45;
+      background: rgba(7,7,7,.66);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .topbar-inner {
+      min-height: 78px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      display: none;
+      place-items: center;
+      background: #fff;
+      color: #070707;
+      font-family: Unbounded, sans-serif;
+      font-weight: 800;
+    }
+
+    .brand-title {
+      font-family: Unbounded, sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .brand-subtitle {
+      margin-top: 4px;
+      color: var(--muted-2);
+      font-size: 12px;
+    }
+
+    .top-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: rgba(255,255,255,.8);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .top-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: .25s ease;
+    }
+
+    .top-links a:hover {
+      color: var(--accent);
+    }
+
+    .menu-button {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(5,5,5,.94);
+      backdrop-filter: blur(24px);
+      padding: 28px;
+      transform: translateX(105%);
+      transition: .4s cubic-bezier(.19,1,.22,1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-menu.active {
+      transform: translateX(0);
+    }
+
+    .mobile-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-menu {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: #fff;
+      cursor: pointer;
+      font-size: 22px;
+    }
+
+    .mobile-nav {
+      display: grid;
+      gap: 12px;
+      margin-top: 46px;
+    }
+
+    .mobile-nav a {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: rgba(255,255,255,.05);
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 78px);
+      display: grid;
+      align-items: center;
+      padding: 48px 0 86px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      right: 8%;
+      top: 5%;
+      background: radial-gradient(circle, rgba(249,199,79,.17), transparent 66%);
+      filter: blur(20px);
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    .hero-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: center;
+    }
+
+    .hero-content {
+      max-width: 1180px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      color: rgba(255,255,255,.78);
+      padding: 11px 15px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .22em;
+      font-weight: 900;
+      margin-bottom: 24px;
+    }
+
+    .kicker i {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px var(--accent);
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: Unbounded, Inter, sans-serif;
+      font-size: clamp(42px, 6vw, 92px);
+      line-height: .94;
+      letter-spacing: -.07em;
+      max-width: 1180px;
+    }
+
+    .hero h1 .hero-title-line {
+    display: block;
+    color: #fff;
+    -webkit-text-stroke: 0;
+    text-stroke: 0;
+    }
+
+    .hero h1 .hero-title-outline {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    color: transparent;
+    white-space: nowrap;
+    -webkit-text-stroke: 1px rgba(255,255,255,.75);
+    text-stroke: 1px rgba(255,255,255,.75);
+    }
+
+    .hero-text {
+      margin-top: 27px;
+      color: rgba(255,255,255,.72);
+      max-width: 700px;
+      font-size: 18px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      position: relative;
+      overflow: hidden;
+      border: 0;
+      border-radius: 999px;
+      min-height: 58px;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .35s ease;
+      white-space: nowrap;
+    }
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.38), transparent);
+      transform: translateX(-120%);
+      transition: .7s ease;
+    }
+
+    .btn:hover::before {
+      transform: translateX(120%);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #070707;
+      box-shadow: 0 18px 60px rgba(249,199,79,.19);
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      transform: translateY(-3px);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--line-2);
+      background: rgba(255,255,255,.05);
+      color: #fff;
+      backdrop-filter: blur(16px);
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(249,199,79,.58);
+      background: rgba(249,199,79,.08);
+      transform: translateY(-3px);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 42px;
+      max-width: 980px;
+    }
+
+    .stat {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      backdrop-filter: blur(16px);
+      border-radius: 24px;
+      padding: 20px;
+      min-height: 104px;
+      transition: .35s ease;
+    }
+
+    .stat:hover {
+      transform: translateY(-5px);
+      border-color: rgba(249,199,79,.44);
+      background: rgba(249,199,79,.07);
+    }
+
+    .stat strong {
+      display: block;
+      font-family: Unbounded, sans-serif;
+      font-size: 25px;
+      line-height: 1;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted-2);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    section {
+      position: relative;
+      padding: 104px 0;
+    }
+
+    .section-head {
+      max-width: 850px;
+      margin: 0 auto 54px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 9px;
+      align-items: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(249,199,79,.2);
+      background: rgba(249,199,79,.08);
+      color: var(--accent-2);
+      font-size: 11px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    .section-head h2 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(32px, 4vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+    }
+
+    .section-head p {
+      margin: 18px auto 0;
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.75;
+    }
+
+    .advantages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .adv-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      border-radius: var(--radius);
+      padding: 31px;
+      min-height: 285px;
+      transition: .45s cubic-bezier(.19,1,.22,1);
+    }
+
+    .adv-card::before {
+      content: "";
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      right: -70px;
+      top: -70px;
+      background: rgba(249,199,79,.1);
+      border-radius: 50%;
+      filter: blur(28px);
+      transition: .45s ease;
+    }
+
+    .adv-card:hover {
+      transform: translateY(-9px);
+      border-color: rgba(249,199,79,.42);
+      background: rgba(255,255,255,.075);
+      box-shadow: 0 24px 90px rgba(0,0,0,.32);
+    }
+
+    .adv-card:hover::before {
+      background: rgba(249,199,79,.22);
+      transform: scale(1.2);
+    }
+
+    .adv-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 22px;
+      border: 1px solid rgba(249,199,79,.23);
+      background: rgba(249,199,79,.1);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .adv-card h3 {
+      position: relative;
+      z-index: 2;
+      font-size: 21px;
+      line-height: 1.2;
+      margin-bottom: 13px;
+    }
+
+    .adv-card p {
+      position: relative;
+      z-index: 2;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    .marquee {
+      border-block: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      overflow: hidden;
+      padding: 22px 0;
+      margin: 14px 0 0;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 38px;
+      width: max-content;
+      animation: marquee 24s linear infinite;
+    }
+
+    .marquee span {
+      font-family: Unbounded, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      color: rgba(255,255,255,.44);
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .split-services {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .sticky-info {
+      position: sticky;
+      top: 104px;
+      border: 1px solid var(--line);
+      background: linear-gradient(145deg, rgba(249,199,79,.13), rgba(255,255,255,.045));
+      border-radius: 42px;
+      padding: 38px;
+      overflow: hidden;
+    }
+
+    .sticky-info::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: rgba(249,199,79,.14);
+      filter: blur(50px);
+    }
+
+    .sticky-info > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .sticky-info h3 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(28px, 3vw, 46px);
+      line-height: 1.05;
+      letter-spacing: -.055em;
+    }
+
+    .sticky-info p {
+      margin-top: 20px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .result-box {
+      margin: 28px 0;
+      border: 1px solid rgba(249,199,79,.23);
+      background: rgba(0,0,0,.22);
+      border-radius: 28px;
+      padding: 22px;
+      color: rgba(255,255,255,.8);
+      line-height: 1.65;
+    }
+
+    .result-box b {
+      color: var(--accent-2);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 292px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      border-radius: 32px;
+      padding: 26px;
+      transition: .4s ease;
+    }
+
+    .service-card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(249,199,79,.42);
+      background: rgba(255,255,255,.075);
+    }
+
+    .service-num {
+      font-family: Unbounded, sans-serif;
+      color: rgba(249,199,79,.8);
+      font-size: 12px;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .service-card h4 {
+      font-size: 20px;
+      line-height: 1.22;
+      margin-bottom: 17px;
+    }
+
+    .service-card ul {
+      display: grid;
+      gap: 10px;
+      list-style: none;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .service-card li {
+      display: flex;
+      gap: 9px;
+    }
+
+    .service-card li::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      flex: 0 0 6px;
+      margin-top: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(249,199,79,.55);
+    }
+
+    .mount-section {
+      padding-top: 0;
+    }
+
+    .mount-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 48px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(249,199,79,.14), rgba(255,255,255,.045) 38%, rgba(255,255,255,.025)),
+        #090909;
+      padding: 44px;
+    }
+
+    .mount-wrap::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1600&q=85") center/cover;
+      opacity: .16;
+      filter: grayscale(.2);
+    }
+
+    .mount-content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .mount-text h2 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(34px, 4vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+    }
+
+    .mount-text p {
+      margin-top: 22px;
+      max-width: 620px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .mount-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .mount-item {
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.42);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      padding: 22px;
+      min-height: 150px;
+      transition: .35s ease;
+    }
+
+    .mount-item:hover {
+      transform: translateY(-5px);
+      background: rgba(249,199,79,.08);
+      border-color: rgba(249,199,79,.35);
+    }
+
+    .mount-item b {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .mount-item span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 13px;
+    }
+
+    .process {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      counter-reset: steps;
+    }
+
+    .process-card {
+      counter-increment: steps;
+      position: relative;
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 34px;
+      padding: 28px;
+      min-height: 250px;
+      overflow: hidden;
+      transition: .35s ease;
+    }
+
+    .process-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(249,199,79,.38);
+    }
+
+    .process-card::before {
+      content: "0" counter(steps);
+      position: absolute;
+      right: 20px;
+      top: 18px;
+      font-family: Unbounded, sans-serif;
+      font-size: 54px;
+      line-height: 1;
+      color: rgba(255,255,255,.06);
+    }
+
+    .process-card .dot {
+      width: 46px;
+      height: 46px;
+      border-radius: 17px;
+      background: rgba(249,199,79,.12);
+      border: 1px solid rgba(249,199,79,.24);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      margin-bottom: 25px;
+      font-size: 20px;
+    }
+
+    .process-card h3 {
+      font-size: 19px;
+      margin-bottom: 12px;
+    }
+
+    .process-card p {
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
+    .objects-layout {
+      display: grid;
+      grid-template-columns: .78fr 1.22fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .object-tabs {
+      display: grid;
+      gap: 13px;
+    }
+
+    .object-tab {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      color: #fff;
+      text-align: left;
+      border-radius: 30px;
+      padding: 24px;
+      cursor: pointer;
+      transition: .35s ease;
+    }
+
+    .object-tab.active,
+    .object-tab:hover {
+      border-color: rgba(249,199,79,.42);
+      background: rgba(249,199,79,.09);
+      transform: translateX(5px);
+    }
+
+    .object-tab b {
+      display: block;
+      font-size: 19px;
+      margin-bottom: 8px;
+    }
+
+    .object-tab span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .object-preview {
+      position: relative;
+      min-height: 560px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 42px;
+      background: #111;
+    }
+
+    .object-preview img {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      filter: grayscale(.18) brightness(.76);
+      transform: scale(1.02);
+      transition: .55s ease;
+    }
+
+    .object-preview:hover img {
+      transform: scale(1.07);
+    }
+
+    .object-preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 20%, rgba(0,0,0,.85));
+    }
+
+    .object-content {
+      position: absolute;
+      z-index: 2;
+      left: 34px;
+      right: 34px;
+      bottom: 34px;
+    }
+
+    .object-content .tag {
+      display: inline-flex;
+      border: 1px solid rgba(249,199,79,.22);
+      background: rgba(249,199,79,.12);
+      color: var(--accent-2);
+      border-radius: 999px;
+      padding: 9px 13px;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .object-content h3 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(30px, 4vw, 54px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+    }
+
+    .object-content p {
+      margin-top: 14px;
+      max-width: 680px;
+      color: rgba(255,255,255,.73);
+      line-height: 1.65;
+    }
+
+    .docs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .doc-card {
+      border: 1px solid var(--line);
+      background: var(--card);
+      border-radius: 34px;
+      padding: 31px;
+      min-height: 250px;
+      position: relative;
+      overflow: hidden;
+      transition: .35s ease;
+    }
+
+    .doc-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(249,199,79,.42);
+    }
+
+    .doc-card::after {
+      content: "PDF";
+      position: absolute;
+      right: 24px;
+      top: 20px;
+      color: rgba(255,255,255,.07);
+      font-family: Unbounded, sans-serif;
+      font-size: 38px;
+      font-weight: 800;
+    }
+
+    .doc-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 21px;
+      background: rgba(249,199,79,.12);
+      border: 1px solid rgba(249,199,79,.25);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      margin-bottom: 22px;
+    }
+
+    .doc-card h3 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .doc-card p {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .cta-band {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 48px;
+      min-height: 470px;
+      display: grid;
+      align-items: center;
+      padding: 56px;
+      background: #111;
+    }
+
+    .cta-band img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .52;
+      filter: grayscale(.2) brightness(.72);
+    }
+
+    .cta-band::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(0,0,0,.92), rgba(0,0,0,.74) 46%, rgba(0,0,0,.22));
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+    }
+
+    .cta-content h2 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(34px, 4vw, 60px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+    }
+
+    .cta-content p {
+      margin-top: 20px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .contact-box {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.045);
+      border-radius: 48px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .contact-info {
+      position: relative;
+      padding: 48px;
+      overflow: hidden;
+    }
+
+    .contact-info::before {
+      content: "";
+      position: absolute;
+      left: -130px;
+      top: -130px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: rgba(249,199,79,.17);
+      filter: blur(60px);
+    }
+
+    .contact-info > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    .contact-info h2 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(32px, 4vw, 58px);
+      line-height: 1.03;
+      letter-spacing: -.055em;
+    }
+
+    .contact-info p {
+      margin-top: 20px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 16px;
+    }
+
+    .contact-links {
+      margin-top: 34px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border: 1px solid var(--line);
+      background: rgba(0,0,0,.28);
+      border-radius: 25px;
+      padding: 18px;
+      transition: .3s ease;
+    }
+
+    .contact-link:hover {
+      transform: translateX(5px);
+      border-color: rgba(249,199,79,.38);
+      background: rgba(249,199,79,.08);
+    }
+
+    .contact-link i {
+      width: 45px;
+      height: 45px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      background: rgba(249,199,79,.12);
+      color: var(--accent);
+      font-style: normal;
+      flex: 0 0 45px;
+    }
+
+    .contact-link small {
+      display: block;
+      color: var(--muted-2);
+      margin-bottom: 4px;
+    }
+
+    .contact-link b {
+      font-size: 15px;
+    }
+
+    .form {
+      padding: 48px;
+      background: rgba(0,0,0,.25);
+      border-left: 1px solid var(--line);
+      display: grid;
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      color: rgba(255,255,255,.76);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.055);
+      color: #fff;
+      border-radius: 22px;
+      padding: 17px 18px;
+      outline: none;
+      transition: .25s ease;
+    }
+
+    .field select {
+      background-color: #111;
+    }
+
+    .field textarea {
+      min-height: 142px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(249,199,79,.55);
+      box-shadow: 0 0 0 4px rgba(249,199,79,.08);
+    }
+
+    .policy {
+      color: var(--muted-2);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      border-top: 1px solid var(--line);
+      padding: 32px 0;
+      color: var(--muted-2);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .footer-nav {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-nav a:hover {
+      color: #fff;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(38px);
+      transition: opacity .8s ease, transform .8s cubic-bezier(.19,1,.22,1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: .08s; }
+    .delay-2 { transition-delay: .16s; }
+    .delay-3 { transition-delay: .24s; }
+    .delay-4 { transition-delay: .32s; }
+
+    .cursor-glow {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(249,199,79,.10), transparent 64%);
+      pointer-events: none;
+      z-index: -1;
+      transform: translate(-50%, -50%);
+      opacity: .75;
+      transition: opacity .25s ease;
+    }
+
+    @keyframes gridMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(56px); }
+    }
+
+    @keyframes shine {
+      0%, 35% { transform: rotate(35deg) translateX(-140%); }
+      60%, 100% { transform: rotate(35deg) translateX(140%); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: .7; }
+      50% { transform: scale(1.14); opacity: 1; }
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 1180px) {
+      :root { --sidebar: 0px; }
+      .page { padding-left: 0; }
+      .sidebar { display: none; }
+      .brand-mark { display: grid; }
+      .menu-button { display: inline-grid; place-items: center; }
+      .top-links { display: none; }
+      .hero-grid,
+      .split-services,
+      .mount-content,
+      .objects-layout,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+      .sticky-info { position: relative; top: auto; }
+      .form { border-left: 0; border-top: 1px solid var(--line); }
+      .process { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .container { width: min(100% - 32px, 1220px); }
+      section { padding: 78px 0; }
+      .hero { padding: 34px 0 70px; }
+      .hero-grid { gap: 34px; }
+      .hero-stats,
+      .advantages-grid,
+      .services-grid,
+      .mount-list,
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-stats { grid-template-columns: repeat(2, 1fr); }
+      .mount-wrap,
+      .contact-info,
+      .form,
+      .cta-band { padding: 28px; border-radius: 34px; }
+      .object-preview { min-height: 430px; border-radius: 34px; }
+      .object-content { left: 24px; right: 24px; bottom: 24px; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 560px) {
+      .topbar-inner { min-height: 72px; }
+      .brand-title { font-size: 11px; }
+      .brand-subtitle { font-size: 11px; }
+      .brand-mark { width: 42px; height: 42px; border-radius: 14px; }
+      .hero h1 { font-size: 38px; }
+      .hero-text { font-size: 15px; line-height: 1.7; }
+      .hero-actions { display: grid; }
+      .btn { width: 100%; padding-inline: 18px; }
+      .hero-stats { grid-template-columns: 1fr; }
+      .section-head { margin-bottom: 36px; }
+      .section-head h2,
+      .mount-text h2,
+      .cta-content h2,
+      .contact-info h2 { font-size: 30px; }
+      .adv-card,
+      .service-card,
+      .process-card,
+      .doc-card { border-radius: 26px; padding: 23px; }
+      .process { grid-template-columns: 1fr; }
+      .object-tab { padding: 20px; border-radius: 24px; }
+      .object-preview { min-height: 390px; }
+      .contact-link { align-items: flex-start; }
+      .footer-nav { flex-wrap: wrap; }
+    }
+
+    /* ===== FULL MOBILE FIX 2026 ===== */
+    html,
+    body {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .page,
+    main,
+    section,
+    .container {
+      max-width: 100%;
+    }
+
+    .brand,
+    .brand > div:last-child {
+      min-width: 0;
+    }
+
+    .brand-title,
+    .brand-subtitle {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 .hero-title-line,
+    .hero h1 .hero-title-outline {
+      overflow-wrap: normal;
+      word-break: normal;
+    }
+
+    .hero h1 .hero-title-outline {
+      line-height: 1.04;
+    }
+
+    .mobile-menu {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    .mobile-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .mobile-nav a::after {
+      content: "›";
+      color: var(--accent);
+      opacity: .7;
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+      .cursor-glow {
+        display: none;
+      }
+
+      .adv-card:hover,
+      .service-card:hover,
+      .mount-item:hover,
+      .process-card:hover,
+      .doc-card:hover,
+      .contact-link:hover,
+      .btn:hover,
+      .stat:hover,
+      .object-tab:hover {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 1280px) {
+      :root {
+        --sidebar: 0px;
+      }
+
+      .page {
+        padding-left: 0;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        flex: 0 0 46px;
+      }
+
+      .menu-button {
+        display: inline-grid;
+        place-items: center;
+        flex: 0 0 48px;
+      }
+
+      .top-links {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .split-services,
+      .mount-content,
+      .objects-layout,
+      .contact-box {
+        grid-template-columns: 1fr;
+      }
+
+      .sticky-info {
+        position: relative;
+        top: auto;
+      }
+
+      .form {
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .process {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .container {
+        width: min(100% - 40px, 1220px);
+      }
+
+      .topbar-inner {
+        min-height: 74px;
+      }
+
+      .hero {
+        padding: 52px 0 74px;
+      }
+
+      .hero h1 {
+        max-width: 100%;
+        font-size: clamp(44px, 8.4vw, 78px);
+        letter-spacing: -.065em;
+      }
+
+      .hero h1 .hero-title-outline {
+        font-size: .9em;
+        white-space: nowrap;
+      }
+
+      .hero-text {
+        max-width: 760px;
+        font-size: 17px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        max-width: 100%;
+      }
+
+      .advantages-grid,
+      .docs-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .services-grid,
+      .mount-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .contact-box {
+        border-radius: 38px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        width: min(100% - 28px, 1220px);
+      }
+
+      section {
+        padding: 68px 0;
+      }
+
+      .topbar {
+        position: sticky;
+      }
+
+      .topbar-inner {
+        min-height: 68px;
+        gap: 12px;
+      }
+
+      .brand {
+        gap: 10px;
+        max-width: calc(100% - 60px);
+      }
+
+      .brand-mark {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+        border-radius: 14px;
+        font-size: 15px;
+      }
+
+      .brand-title {
+        font-size: 12px;
+        letter-spacing: .08em;
+      }
+
+      .brand-subtitle {
+        max-width: 210px;
+        font-size: 11px;
+      }
+
+      .menu-button,
+      .close-menu {
+        width: 44px;
+        height: 44px;
+      }
+
+      .mobile-menu {
+        padding: 20px 14px 28px;
+      }
+
+      .mobile-nav {
+        margin-top: 34px;
+        gap: 10px;
+      }
+
+      .mobile-nav a {
+        padding: 18px;
+        border-radius: 20px;
+        font-size: 18px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 42px 0 62px;
+      }
+
+      .hero::before {
+        width: 360px;
+        height: 360px;
+        right: -120px;
+        top: 30px;
+        opacity: .8;
+      }
+
+      .kicker {
+        max-width: 100%;
+        padding: 10px 13px;
+        font-size: 9px;
+        letter-spacing: .16em;
+        line-height: 1.35;
+        white-space: normal;
+      }
+
+      .hero h1 {
+        font-size: clamp(34px, 10vw, 58px);
+        line-height: .98;
+        letter-spacing: -.06em;
+      }
+
+      .hero h1 .hero-title-outline {
+        font-size: .86em;
+        line-height: 1.08;
+        white-space: nowrap;
+        -webkit-text-stroke-width: .8px;
+      }
+
+      .hero-text {
+        margin-top: 22px;
+        max-width: 100%;
+        font-size: 16px;
+        line-height: 1.72;
+      }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 28px;
+      }
+
+      .btn {
+        width: 100%;
+        min-height: 56px;
+        padding: 0 18px;
+        text-align: center;
+        white-space: normal;
+        line-height: 1.25;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .stat {
+        min-height: 96px;
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .stat strong {
+        font-size: 23px;
+      }
+
+      .section-head {
+        margin-bottom: 34px;
+        text-align: left;
+      }
+
+      .section-head h2,
+      .mount-text h2,
+      .cta-content h2,
+      .contact-info h2 {
+        font-size: clamp(28px, 8vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -.045em;
+      }
+
+      .section-head p,
+      .mount-text p,
+      .cta-content p,
+      .contact-info p,
+      .sticky-info p {
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: .16em;
+      }
+
+      .advantages-grid,
+      .services-grid,
+      .mount-list,
+      .process,
+      .docs-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .adv-card,
+      .service-card,
+      .process-card,
+      .doc-card,
+      .sticky-info {
+        min-height: auto;
+        padding: 22px;
+        border-radius: 26px;
+      }
+
+      .adv-icon,
+      .doc-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 18px;
+        margin-bottom: 18px;
+      }
+
+      .service-card h4,
+      .adv-card h3,
+      .doc-card h3 {
+        font-size: 18px;
+      }
+
+      .service-card ul {
+        gap: 8px;
+      }
+
+      .mount-section {
+        padding-top: 0;
+      }
+
+      .mount-wrap {
+        padding: 22px;
+        border-radius: 30px;
+      }
+
+      .mount-content {
+        gap: 24px;
+      }
+
+      .mount-item {
+        min-height: auto;
+        padding: 19px;
+        border-radius: 22px;
+      }
+
+      .object-tabs {
+        gap: 10px;
+      }
+
+      .object-tab {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .object-tab.active,
+      .object-tab:hover {
+        transform: none;
+      }
+
+      .object-tab b {
+        font-size: 17px;
+      }
+
+      .object-preview {
+        min-height: 380px;
+        border-radius: 28px;
+      }
+
+      .object-content {
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+      }
+
+      .object-content h3 {
+        font-size: clamp(27px, 8vw, 38px);
+      }
+
+      .object-content p {
+        font-size: 14px;
+      }
+
+      .cta-band {
+        min-height: 420px;
+        padding: 24px;
+        border-radius: 30px;
+        align-items: end;
+      }
+
+      .cta-band::after {
+        background: linear-gradient(180deg, rgba(0,0,0,.35), rgba(0,0,0,.92));
+      }
+
+      .contact-box {
+        border-radius: 30px;
+      }
+
+      .contact-info,
+      .form {
+        padding: 24px;
+      }
+
+      .contact-links {
+        margin-top: 26px;
+      }
+
+      .contact-link {
+        padding: 16px;
+        border-radius: 22px;
+      }
+
+      .field input,
+      .field select,
+      .field textarea {
+        border-radius: 18px;
+        padding: 15px 16px;
+        font-size: 16px;
+      }
+
+      .field textarea {
+        min-height: 130px;
+      }
+
+      .footer {
+        padding: 26px 0;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-nav {
+        flex-wrap: wrap;
+        gap: 12px 16px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .container {
+        width: min(100% - 24px, 1220px);
+      }
+
+      .brand-subtitle {
+        max-width: 176px;
+      }
+
+      .hero {
+        padding: 34px 0 52px;
+      }
+
+      .hero h1 {
+        font-size: clamp(30px, 9.2vw, 40px);
+        line-height: 1.02;
+        letter-spacing: -.055em;
+      }
+
+      .hero h1 .hero-title-outline {
+        font-size: .78em;
+        -webkit-text-stroke-width: .7px;
+      }
+
+      .hero-text {
+        font-size: 14.5px;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .stat {
+        min-height: auto;
+      }
+
+      .btn {
+        min-height: 54px;
+        font-size: 13px;
+      }
+
+      .section-head h2,
+      .mount-text h2,
+      .cta-content h2,
+      .contact-info h2 {
+        font-size: 28px;
+      }
+
+      .marquee {
+        padding: 16px 0;
+      }
+
+      .marquee span {
+        font-size: 12px;
+      }
+
+      .object-preview {
+        min-height: 340px;
+      }
+
+      .object-content .tag {
+        font-size: 9px;
+      }
+
+      .object-content h3 {
+        font-size: 26px;
+      }
+
+      .contact-link {
+        gap: 12px;
+      }
+
+      .contact-link i {
+        width: 40px;
+        height: 40px;
+        flex-basis: 40px;
+      }
+
+      .contact-link b {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      .hero h1 .hero-title-outline {
+        font-size: .74em;
+      }
+
+      .brand-title {
+        font-size: 10px;
+      }
+
+      .brand-subtitle {
+        max-width: 150px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <aside class="sidebar">
+    <a href="#top" class="side-logo" aria-label="КВАНТ-2000">К</a>
+    <nav class="side-nav" aria-label="Основное меню">
+      <a href="#services">Услуги <span>›</span></a>
+      <a href="#about">О компании <span>›</span></a>
+      <a href="#objects">Наши объекты <span>›</span></a>
+      <a href="#docs">Документы <span>›</span></a>
+      <a href="#contacts">Контакты <span>›</span></a>
+    </nav>
+    <div class="side-social">
+      <p>Связь</p>
+      <div class="icons">
+        <a href="tel:+79129386599" aria-label="Телефон">☎</a>
+        <a href="https://wa.me/79129386599" aria-label="WhatsApp">W</a>
+        <a href="https://t.me/" aria-label="Telegram">T</a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-head">
+      <div class="brand">
+        <div class="brand-mark">К</div>
+        <div>
+          <div class="brand-title">ООО «КВАНТ-2000»</div>
+          <div class="brand-subtitle">электротехническая лаборатория</div>
+        </div>
+      </div>
+      <button class="close-menu" type="button" id="closeMenu" aria-label="Закрыть меню">×</button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="#services">Услуги</a>
+      <a href="#about">О компании</a>
+      <a href="#objects">Наши объекты</a>
+      <a href="#docs">Документы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+  </div>
+
+  <div class="page">
+    <header class="topbar" id="top">
+      <div class="container topbar-inner">
+        <a class="brand" href="#top">
+          <div class="brand-mark">К</div>
+          <div>
+            <div class="brand-title">ООО «КВАНТ-2000»</div>
+            <div class="brand-subtitle">испытания • измерения • электромонтаж • ПНР</div>
+          </div>
+        </a>
+
+        <div class="top-links">
+          <a href="tel:+79129386599">☎ +7 (912) 938-65-99</a>
+          <a href="mailto:info@kvant2000.ru">✉ info@kvant2000.ru</a>
+          <a class="btn btn-primary" href="#contacts">Заказать выезд специалиста →</a>
+        </div>
+
+        <button class="menu-button" type="button" id="openMenu" aria-label="Открыть меню">☰</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-content">
+            <div class="kicker reveal active"><i></i> Работаем по всей России 24/7</div>
+            <h1 class="reveal active delay-1">
+              <span class="hero-title-line">Электротехническая</span>
+              <span class="hero-title-line">лаборатория</span>
+              <span class="hero-title-outline">полного цикла</span>
+            </h1>
+            <p class="hero-text reveal active delay-2">
+              Испытания, измерения, электромонтаж и пусконаладочные работы. Работаем по договору с НДС и без НДС, готовим официальный пакет документов и выполняем сложные задачи под ключ.
+            </p>
+            <div class="hero-actions reveal active delay-3">
+              <a href="#contacts" class="btn btn-primary">Получить коммерческое предложение →</a>
+              <a href="#contacts" class="btn btn-secondary">Заказать выезд →</a>
+            </div>
+            <div class="hero-stats reveal active delay-4">
+              <div class="stat"><strong>10+</strong><span>лет опыта</span></div>
+              <div class="stat"><strong>24/7</strong><span>работаем</span></div>
+              <div class="stat"><strong>10 кВ</strong><span>испытания</span></div>
+              <div class="stat"><strong>РФ</strong><span>выезд по стране</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <span>Измерение сопротивления изоляции</span>
+          <span>Высоковольтные испытания</span>
+          <span>Электромонтаж</span>
+          <span>ПНР</span>
+          <span>Тепловизионное обследование</span>
+          <span>РЗА</span>
+          <span>Протоколы испытаний</span>
+          <span>Измерение сопротивления изоляции</span>
+          <span>Высоковольтные испытания</span>
+          <span>Электромонтаж</span>
+          <span>ПНР</span>
+          <span>Тепловизионное обследование</span>
+          <span>РЗА</span>
+          <span>Протоколы испытаний</span>
+        </div>
+      </div>
+
+      <section id="about">
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="eyebrow">✦ Преимущества</div>
+            <h2>Работаем официально, быстро и под ключ</h2>
+            <p>ООО «КВАНТ-2000» закрывает задачи по испытаниям, измерениям, электромонтажу, подключению, расключению и пусконаладочным работам.</p>
+          </div>
+
+          <div class="advantages-grid">
+            <article class="adv-card reveal">
+              <div class="adv-icon">🏆</div>
+              <h3>Опыт и квалификация</h3>
+              <p>Более 10 лет на рынке. Высококвалифицированные специалисты с допусками до 1000 В и выше. Выполняем работы любой сложности.</p>
+            </article>
+            <article class="adv-card reveal delay-1">
+              <div class="adv-icon">🔧</div>
+              <h3>Собственный парк оборудования</h3>
+              <p>Современные поверенные приборы ведущих производителей. Полный комплект для всех видов испытаний и измерений.</p>
+            </article>
+            <article class="adv-card reveal delay-2">
+              <div class="adv-icon">📋</div>
+              <h3>Работаем по договору</h3>
+              <p>Официальное сотрудничество с НДС и без НДС. Полный пакет документов. Безналичный расчёт.</p>
+            </article>
+            <article class="adv-card reveal">
+              <div class="adv-icon">🏢</div>
+              <h3>Аккредитация на ЭТП</h3>
+              <p>Аккредитованы на ведущих российских электронных торговых площадках. Участвуем в тендерах и госзакупках.</p>
+            </article>
+            <article class="adv-card reveal delay-1">
+              <div class="adv-icon">🚗</div>
+              <h3>Выезд по всей России</h3>
+              <p>Мобильные бригады. Выезд на объект в кратчайшие сроки. Работаем в любом регионе РФ.</p>
+            </article>
+            <article class="adv-card reveal delay-2">
+              <div class="adv-icon">⚡</div>
+              <h3>Комплексный подход</h3>
+              <p>Не только испытания, но и электромонтаж, ПНР, подключение и расключение. Решаем задачу под ключ.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="services">
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="eyebrow">✦ Услуги</div>
+            <h2>Электротехническая лаборатория</h2>
+            <p>Выполняем полный комплекс испытаний и измерений электроустановок с официальными протоколами, печатью и подписью лаборатории.</p>
+          </div>
+
+          <div class="split-services">
+            <aside class="sticky-info reveal">
+              <h3>Полный комплекс измерений и испытаний</h3>
+              <p>Проводим диагностику электроустановок, выявляем дефекты, готовим протоколы и даём понятную картину состояния объекта.</p>
+              <div class="result-box">
+                <b>Результат:</b> официальные протоколы испытаний, дефектная ведомость, рекомендации по устранению нарушений и полный пакет закрывающих документов.
+              </div>
+              <a href="#contacts" class="btn btn-primary">Заказать испытания →</a>
+            </aside>
+
+            <div class="services-grid">
+              <article class="service-card reveal">
+                <div class="service-num">01 / Изоляция</div>
+                <h4>Измерение сопротивления изоляции</h4>
+                <ul>
+                  <li>Кабельные линии 0,4–10 кВ</li>
+                  <li>Электропроводка</li>
+                  <li>Электрооборудование</li>
+                  <li>Электродвигатели и трансформаторы</li>
+                </ul>
+              </article>
+              <article class="service-card reveal delay-1">
+                <div class="service-num">02 / Заземление</div>
+                <h4>Измерение сопротивления заземляющих устройств</h4>
+                <ul>
+                  <li>Контур заземления</li>
+                  <li>Заземляющие проводники</li>
+                  <li>Молниезащита</li>
+                  <li>Повторное заземление</li>
+                </ul>
+              </article>
+              <article class="service-card reveal">
+                <div class="service-num">03 / Защита</div>
+                <h4>Проверка цепи «фаза-нуль»</h4>
+                <ul>
+                  <li>Измерение петли КЗ</li>
+                  <li>Проверка эффективности защиты</li>
+                  <li>Соответствие уставок автоматов</li>
+                </ul>
+              </article>
+              <article class="service-card reveal delay-1">
+                <div class="service-num">04 / Автоматы</div>
+                <h4>Испытание автоматических выключателей</h4>
+                <ul>
+                  <li>Время срабатывания</li>
+                  <li>Ток срабатывания</li>
+                  <li>Проверка УЗО и дифавтоматов</li>
+                </ul>
+              </article>
+              <article class="service-card reveal">
+                <div class="service-num">05 / До 10 кВ</div>
+                <h4>Высоковольтные испытания</h4>
+                <ul>
+                  <li>Испытание кабелей повышенным напряжением</li>
+                  <li>Испытание трансформаторов</li>
+                  <li>Испытание высоковольтных выключателей</li>
+                </ul>
+              </article>
+              <article class="service-card reveal delay-1">
+                <div class="service-num">06 / Диагностика</div>
+                <h4>Тепловизионное обследование</h4>
+                <ul>
+                  <li>Выявление перегрева контактов</li>
+                  <li>Поиск скрытых дефектов</li>
+                  <li>Предотвращение аварий</li>
+                </ul>
+              </article>
+              <article class="service-card reveal">
+                <div class="service-num">07 / РЗА</div>
+                <h4>Проверка релейной защиты и автоматики</h4>
+                <ul>
+                  <li>Настройка защит</li>
+                  <li>Испытания</li>
+                  <li>Протоколы</li>
+                </ul>
+              </article>
+              <article class="service-card reveal delay-1">
+                <div class="service-num">08 / Осмотр</div>
+                <h4>Визуальный осмотр электроустановок</h4>
+                <ul>
+                  <li>Проверка состояния оборудования</li>
+                  <li>Соответствие ПУЭ и ПТЭЭП</li>
+                  <li>Дефектная ведомость</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mount-section">
+        <div class="container">
+          <div class="mount-wrap reveal">
+            <div class="mount-content">
+              <div class="mount-text">
+                <div class="eyebrow">✦ Электромонтажные работы</div>
+                <h2>Монтаж любой сложности на промышленных и коммерческих объектах</h2>
+                <p>Прокладываем кабельные линии, собираем щитовое оборудование, монтируем освещение, заземление, молниезащиту, слаботочные системы и силовое оборудование.</p>
+                <div style="margin-top: 30px;">
+                  <a href="#contacts" class="btn btn-primary">Заказать электромонтаж →</a>
+                </div>
+              </div>
+
+              <div class="mount-list">
+                <div class="mount-item"><b>Монтаж кабельных линий</b><span>Силовые и контрольные кабели, лотки, короба, траншеи.</span></div>
+                <div class="mount-item"><b>Распределительные щиты</b><span>Сборка и установка ВРУ, ГРЩ, ЩЭ, автоматика и подключение.</span></div>
+                <div class="mount-item"><b>Монтаж освещения</b><span>Внутреннее, наружное, аварийное освещение и системы управления.</span></div>
+                <div class="mount-item"><b>Заземление и молниезащита</b><span>Контур заземления, молниеприёмники и заземление оборудования.</span></div>
+                <div class="mount-item"><b>Силовое оборудование</b><span>Подключение станков, агрегатов, электродвигателей и трансформаторов.</span></div>
+                <div class="mount-item"><b>Реконструкция</b><span>Замена устаревшего оборудования, увеличение мощности, модернизация систем.</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="eyebrow">✦ Как работаем</div>
+            <h2>Прозрачный процесс от заявки до протоколов</h2>
+            <p>Сначала уточняем задачу и объект, затем согласовываем сроки, выезжаем, выполняем работы и передаём документы.</p>
+          </div>
+          <div class="process">
+            <article class="process-card reveal"><div class="dot">1</div><h3>Заявка и консультация</h3><p>Фиксируем задачу, регион, сроки, тип объекта и необходимый перечень работ.</p></article>
+            <article class="process-card reveal delay-1"><div class="dot">2</div><h3>Расчёт стоимости</h3><p>Готовим коммерческое предложение, согласовываем договор и формат оплаты.</p></article>
+            <article class="process-card reveal delay-2"><div class="dot">3</div><h3>Выезд бригады</h3><p>Специалисты приезжают на объект с поверенным оборудованием и выполняют работы.</p></article>
+            <article class="process-card reveal delay-3"><div class="dot">4</div><h3>Документы</h3><p>Передаём протоколы испытаний, акты, счета и сопроводительную документацию.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="objects">
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="eyebrow">✦ Наши объекты</div>
+            <h2>Выезжаем на объекты любой категории сложности</h2>
+            <p>Работаем с промышленными площадками, коммерческими зданиями, электрощитовыми, ТП, складскими и производственными объектами.</p>
+          </div>
+
+          <div class="objects-layout reveal">
+            <div class="object-tabs">
+              <button class="object-tab active" type="button" data-title="Промышленные предприятия" data-text="Измерения, испытания, электромонтаж и подготовка протоколов для производственных площадок." data-img="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1500&q=85"><b>Промышленные предприятия</b><span>Испытания и диагностика на производственных площадках.</span></button>
+              <button class="object-tab" type="button" data-title="Коммерческие здания" data-text="Проверка электроустановок, щитового оборудования, освещения, систем безопасности и инженерной инфраструктуры." data-img="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1500&q=85"><b>Коммерческие здания</b><span>Офисы, ТЦ, склады, помещения с действующими электроустановками.</span></button>
+              <button class="object-tab" type="button" data-title="Электрощитовые и ТП" data-text="Диагностика, обслуживание, монтаж, подключение и пусконаладочные работы электрощитовых и трансформаторных подстанций." data-img="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=1500&q=85"><b>Электрощитовые и ТП</b><span>Работа с щитовым оборудованием, вводами и распределением.</span></button>
+            </div>
+
+            <div class="object-preview">
+              <img id="objectImage" src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1500&q=85" alt="Промышленные предприятия" />
+              <div class="object-content">
+                <div class="tag">КВАНТ-2000</div>
+                <h3 id="objectTitle">Промышленные предприятия</h3>
+                <p id="objectText">Измерения, испытания, электромонтаж и подготовка протоколов для производственных площадок.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="docs">
+        <div class="container">
+          <div class="section-head reveal">
+            <div class="eyebrow">✦ Документы</div>
+            <h2>Готовим полный пакет закрывающих документов</h2>
+            <p>После выполнения работ заказчик получает официальные протоколы, акты, счета, договор и сопроводительную документацию.</p>
+          </div>
+          <div class="docs-grid">
+            <article class="doc-card reveal"><div class="doc-icon">📄</div><h3>Протоколы испытаний</h3><p>Официальные протоколы с печатью и подписью лаборатории по итогам измерений и испытаний.</p></article>
+            <article class="doc-card reveal delay-1"><div class="doc-icon">🧾</div><h3>Договор и закрывающие</h3><p>Работаем официально, с НДС и без НДС. Передаём акты, счета и весь комплект документов.</p></article>
+            <article class="doc-card reveal delay-2"><div class="doc-icon">✅</div><h3>Дефектные ведомости</h3><p>Фиксируем выявленные нарушения и готовим понятный перечень дальнейших работ.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="cta-band reveal">
+            <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1700&q=85" alt="Электротехнические работы" />
+            <div class="cta-content">
+              <div class="eyebrow">✦ Срочный выезд</div>
+              <h2>Нужен специалист на объект в ближайшее время?</h2>
+              <p>Оставьте заявку. Уточним задачу, состав работ, сроки, регион и подготовим коммерческое предложение.</p>
+              <div style="margin-top: 30px; display: flex; gap: 14px; flex-wrap: wrap;">
+                <a href="#contacts" class="btn btn-primary">Заказать выезд →</a>
+                <a href="tel:+79129386599" class="btn btn-secondary">Позвонить сейчас →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contacts">
+        <div class="container">
+          <div class="contact-box reveal">
+            <div class="contact-info">
+              <div class="eyebrow">✦ Контакты</div>
+              <h2>Оставьте заявку на расчёт работ</h2>
+              <p>Напишите, какие работы нужны, где находится объект и какие сроки. Мы свяжемся с вами и подготовим предложение.</p>
+
+              <div class="contact-links">
+                <a class="contact-link" href="tel:+79129386599"><i>☎</i><span><small>Телефон</small><b>+7 (912) 938-65-99</b></span></a>
+                <a class="contact-link" href="mailto:info@kvant2000.ru"><i>✉</i><span><small>Email</small><b>info@kvant2000.ru</b></span></a>
+                <a class="contact-link" href="https://wa.me/79129386599"><i>💬</i><span><small>WhatsApp / Telegram</small><b>быстрая связь с менеджером</b></span></a>
+              </div>
+            </div>
+
+            <form class="form" id="requestForm">
+              <div class="field">
+                <label for="name">Ваше имя</label>
+                <input id="name" name="name" type="text" placeholder="Иван" required />
+              </div>
+              <div class="field">
+                <label for="phone">Телефон</label>
+                <input id="phone" name="phone" type="tel" placeholder="+7 (___) ___-__-__" required />
+              </div>
+              <div class="field">
+                <label for="service">Что нужно выполнить</label>
+                <select id="service" name="service">
+                  <option>Электротехнические испытания</option>
+                  <option>Электромонтажные работы</option>
+                  <option>Пусконаладочные работы</option>
+                  <option>Комплекс работ под ключ</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="message">Комментарий</label>
+                <textarea id="message" name="message" placeholder="Опишите объект, сроки и объём работ"></textarea>
+              </div>
+              <button class="btn btn-primary" type="submit">Отправить заявку →</button>
+              <div class="policy">Нажимая кнопку, вы соглашаетесь на обработку персональных данных. Сейчас форма показывает демо-уведомление. Для реальной отправки нужно подключить почту, CRM или Telegram-бота.</div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>© ООО «КВАНТ-2000». Электротехническая лаборатория полного цикла.</div>
+        <nav class="footer-nav">
+          <a href="#services">Услуги</a>
+          <a href="#about">О компании</a>
+          <a href="#docs">Документы</a>
+          <a href="#contacts">Контакты</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const revealItems = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+
+    const mobileMenu = document.getElementById('mobileMenu');
+    const openMenu = document.getElementById('openMenu');
+    const closeMenu = document.getElementById('closeMenu');
+
+    openMenu.addEventListener('click', () => mobileMenu.classList.add('active'));
+    closeMenu.addEventListener('click', () => mobileMenu.classList.remove('active'));
+    document.querySelectorAll('.mobile-nav a').forEach((link) => {
+      link.addEventListener('click', () => mobileMenu.classList.remove('active'));
+    });
+
+    const tabs = document.querySelectorAll('.object-tab');
+    const objectImage = document.getElementById('objectImage');
+    const objectTitle = document.getElementById('objectTitle');
+    const objectText = document.getElementById('objectText');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((item) => item.classList.remove('active'));
+        tab.classList.add('active');
+        objectImage.style.opacity = '0';
+        objectTitle.style.opacity = '0';
+        objectText.style.opacity = '0';
+        setTimeout(() => {
+          objectImage.src = tab.dataset.img;
+          objectImage.alt = tab.dataset.title;
+          objectTitle.textContent = tab.dataset.title;
+          objectText.textContent = tab.dataset.text;
+          objectImage.style.opacity = '1';
+          objectTitle.style.opacity = '1';
+          objectText.style.opacity = '1';
+        }, 220);
+      });
+    });
+
+    const cursorGlow = document.getElementById('cursorGlow');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let glowX = mouseX;
+    let glowY = mouseY;
+
+    window.addEventListener('mousemove', (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+    });
+
+    function animateGlow() {
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      cursorGlow.style.transform = `translate(${glowX - 210}px, ${glowY - 210}px)`;
+      requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+
+    const form = document.getElementById('requestForm');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      const oldText = button.textContent;
+      button.textContent = 'Заявка подготовлена ✓';
+      button.style.background = '#56f39a';
+      setTimeout(() => {
+        button.textContent = oldText;
+        button.style.background = '';
+        form.reset();
+      }, 2200);
+    });
+  </script>
+</body>
+</html>
